@@ -1,75 +1,69 @@
 import streamlit as st
+from datetime import datetime
 
-# Configuración de página
 st.set_page_config(
     page_title="Portfolio Guardian",
-    page_icon="📊",
+    page_icon="🛡️",
     layout="wide"
 )
 
-# Título
-st.title("📊 Portfolio Guardian")
+# -----------------------------
+# CABECERA
+# -----------------------------
+st.title("🛡️ Portfolio Guardian")
+st.subheader("Centro de Decisiones")
 
-st.write(
-    "Sistema de análisis de riesgo de mercado y gestión de cartera."
-)
+st.write(f"**Última actualización:** {datetime.now().strftime('%d/%m/%Y %H:%M')}")
 
 st.divider()
 
-# Indicador provisional
-irm = 75
+# -----------------------------
+# INDICADORES
+# -----------------------------
+col1, col2, col3 = st.columns(3)
 
-# Estado del mercado
-if irm >= 70:
-    estado = "🟢 Riesgo bajo / Mercado estable"
-elif irm >= 40:
-    estado = "🟠 Precaución"
-else:
-    estado = "🔴 Riesgo elevado"
+with col1:
+    st.metric("IRM", "72 / 100", "🟢")
 
-# Mostrar indicadores
+with col2:
+    st.metric("Mercado", "Alcista")
+
+with col3:
+    st.metric("Riesgo", "Moderado")
+
+st.divider()
+
+# -----------------------------
+# COMITÉ DE INVERSIÓN
+# -----------------------------
+st.header("Comité de Inversión")
+
 col1, col2 = st.columns(2)
 
 with col1:
-    st.metric(
-        "Indicador de Riesgo de Mercado (IRM)",
-        f"{irm}/100"
-    )
+    st.success("✔ Tendencia")
+    st.success("✔ Opciones")
+    st.success("✔ Crédito")
 
 with col2:
-    st.metric(
-        "Estado actual",
-        estado
-    )
+    st.warning("⚠ Sentimiento")
+    st.success("✔ Macro")
 
 st.divider()
 
-st.subheader("Asignación defensiva propuesta")
+# -----------------------------
+# RECOMENDACIÓN
+# -----------------------------
+st.header("Recomendación")
 
-datos = {
-    "Fondos indexados": "50%",
-    "Fondos monetarios": "20%",
-    "Oro": "10%",
-    "Retorno absoluto": "10%",
-    "Liquidez": "10%"
-}
+st.info("""
+**Mantener la cartera actual.**
 
-for activo, porcentaje in datos.items():
-    st.write(f"**{activo}:** {porcentaje}")
+Las nuevas aportaciones deberían dirigirse, por ahora, a un **fondo monetario**.
 
-st.divider()
-
-st.subheader("Próximos módulos")
-
-st.write("""
-✅ VIX  
-✅ Sentimiento AAII  
-✅ Fear & Greed  
-✅ S&P 500  
-✅ MSCI World  
-✅ Crédito  
-✅ Indexa  
-✅ Finizens  
-✅ MyInvestor  
-✅ Trade Republic  
+Todavía no existen señales suficientes para reducir el riesgo.
 """)
+
+st.divider()
+
+st.caption("Portfolio Guardian v0.1")
