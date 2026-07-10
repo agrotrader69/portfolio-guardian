@@ -1,23 +1,57 @@
-PORTFOLIO GUARDIAN
+import streamlit as st
+from datetime import datetime
+from modules.market import get_market_data
 
-IRM
+st.set_page_config(
+    page_title="Portfolio Guardian",
+    page_icon="🛡️",
+    layout="wide"
+)
 
-78 /100
+st.title("🛡️ Portfolio Guardian")
+st.subheader("Centro de Decisiones")
 
-🟢 Mercado sano
+st.write(f"Actualizado: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
 
-S&P500
+st.divider()
 
-+0,52%
+try:
+    datos = get_market_data()
 
-NASDAQ
+    st.header("Mercado")
 
-+0,61%
+    col1, col2 = st.columns(2)
 
-VIX
+    items = list(datos.items())
 
-17,34
+    for i, (nombre, valor) in enumerate(items):
+        with col1 if i % 2 == 0 else col2:
+            st.metric(
+                label=nombre,
+                value=valor["precio"],
+                delta=f'{valor["cambio"]}%'
+            )
 
-RECOMENDACIÓN
+except Exception as e:
+    st.error(f"Error obteniendo datos: {e}")
 
-Mantener cartera
+st.divider()
+
+st.header("Centro de Decisiones")
+
+st.success("🟢 Mercado en seguimiento")
+
+st.info(
+    """
+Esta es la primera versión de Portfolio Guardian.
+
+Próximamente incorporaremos:
+
+- VIX
+- Fear & Greed
+- Put/Call Ratio
+- AAII
+- Comité de Inversión
+- Recomendaciones automáticas
+"""
+)
