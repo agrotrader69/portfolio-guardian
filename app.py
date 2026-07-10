@@ -1,69 +1,67 @@
 import streamlit as st
 from datetime import datetime
 
+from modules.market import get_market_data
+
 st.set_page_config(
     page_title="Portfolio Guardian",
     page_icon="🛡️",
     layout="wide"
 )
 
-# -----------------------------
-# CABECERA
-# -----------------------------
 st.title("🛡️ Portfolio Guardian")
 st.subheader("Centro de Decisiones")
 
-st.write(f"**Última actualización:** {datetime.now().strftime('%d/%m/%Y %H:%M')}")
+st.write(f"Actualizado: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
 
 st.divider()
 
-# -----------------------------
-# INDICADORES
-# -----------------------------
-col1, col2, col3 = st.columns(3)
+# ==========================
+# DATOS DE MERCADO
+# ==========================
 
-with col1:
-    st.metric("IRM", "72 / 100", "🟢")
+datos = get_market_data()
 
-with col2:
-    st.metric("Mercado", "Alcista")
-
-with col3:
-    st.metric("Riesgo", "Moderado")
-
-st.divider()
-
-# -----------------------------
-# COMITÉ DE INVERSIÓN
-# -----------------------------
-st.header("Comité de Inversión")
+st.header("Mercado")
 
 col1, col2 = st.columns(2)
 
-with col1:
-    st.success("✔ Tendencia")
-    st.success("✔ Opciones")
-    st.success("✔ Crédito")
+i = 0
 
-with col2:
-    st.warning("⚠ Sentimiento")
-    st.success("✔ Macro")
+for nombre, valor in datos.items():
+
+    if i % 2 == 0:
+        with col1:
+            st.metric(
+                nombre,
+                valor["precio"],
+                f'{valor["cambio"]}%'
+            )
+    else:
+        with col2:
+            st.metric(
+                nombre,
+                valor["precio"],
+                f'{valor["cambio"]}%'
+            )
+
+    i += 1
 
 st.divider()
 
-# -----------------------------
-# RECOMENDACIÓN
-# -----------------------------
-st.header("Recomendación")
+st.header("Centro de Decisiones")
+
+st.success("🟢 Mercado en seguimiento")
 
 st.info("""
-**Mantener la cartera actual.**
+De momento esta versión solo muestra datos reales del mercado.
 
-Las nuevas aportaciones deberían dirigirse, por ahora, a un **fondo monetario**.
+En la siguiente versión se incorporarán:
 
-Todavía no existen señales suficientes para reducir el riesgo.
+- VIX
+- Fear & Greed
+- Put/Call Ratio
+- AAII
+- Comité de Inversión
+- Recomendación automática
 """)
-
-st.divider()
-
-st.caption("Portfolio Guardian v0.1")
